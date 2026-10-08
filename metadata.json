@@ -1,0 +1,8 @@
+{
+  "name": "MailCloud SaaS - Business Email Hosting & Webmail Platform",
+  "description": "Complete Business Email Hosting Platform with Domain Management, DNS Auto-Verification, Webmail Client, cPanel/Cloudflare API Integration, and AI Assistant.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
