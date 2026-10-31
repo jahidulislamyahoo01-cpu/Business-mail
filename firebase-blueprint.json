@@ -1,0 +1,195 @@
+{
+  "entities": {
+    "domain": {
+      "title": "Domain",
+      "description": "Custom verified domain configuration and DNS verification status",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "domainName": { "type": "string" },
+        "status": { "type": "string", "enum": ["verified", "pending", "failed"] },
+        "mxVerified": { "type": "boolean" },
+        "spfVerified": { "type": "boolean" },
+        "dmarcVerified": { "type": "boolean" },
+        "mailboxesCount": { "type": "number" },
+        "maxMailboxes": { "type": "number" },
+        "resendApiKey": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "domainName", "status"]
+    },
+    "mailbox": {
+      "title": "Mailbox",
+      "description": "User business email inbox configuration",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "domainId": { "type": "string" },
+        "address": { "type": "string" },
+        "username": { "type": "string" },
+        "domainName": { "type": "string" },
+        "displayName": { "type": "string" },
+        "quotaMb": { "type": "number" },
+        "usedMb": { "type": "number" },
+        "status": { "type": "string", "enum": ["active", "suspended"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "domainId", "address", "domainName", "displayName"]
+    },
+    "message": {
+      "title": "EmailMessage",
+      "description": "Inbound and outbound webmail message",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "mailboxId": { "type": "string" },
+        "mailboxAddress": { "type": "string" },
+        "from": { "type": "string" },
+        "to": { "type": "string" },
+        "subject": { "type": "string" },
+        "body": { "type": "string" },
+        "folder": { "type": "string", "enum": ["inbox", "sent", "drafts", "spam", "trash"] },
+        "isRead": { "type": "boolean" },
+        "isStarred": { "type": "boolean" },
+        "date": { "type": "string", "format": "date-time" },
+        "hasAttachments": { "type": "boolean" }
+      },
+      "required": ["id", "mailboxAddress", "from", "to", "subject", "body"]
+    },
+    "teamUser": {
+      "title": "TeamUser",
+      "description": "RBAC user account with role and assigned mailboxes",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "email": { "type": "string" },
+        "role": { "type": "string", "enum": ["super_admin", "admin", "manager", "sub_admin"] },
+        "status": { "type": "string", "enum": ["active", "disabled"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "name", "email", "role", "status"]
+    },
+    "securityLog": {
+      "title": "SecurityLog",
+      "description": "Audit and security event log",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "action": { "type": "string" },
+        "actorEmail": { "type": "string" },
+        "actorRole": { "type": "string" },
+        "details": { "type": "string" },
+        "status": { "type": "string", "enum": ["success", "warning", "error"] },
+        "ip": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "action", "actorEmail", "details", "status", "timestamp"]
+    },
+    "emailTemplate": {
+      "title": "EmailTemplate",
+      "description": "Reusable business email template or invoice format",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "titleBn": { "type": "string" },
+        "titleEn": { "type": "string" },
+        "category": { "type": "string", "enum": ["invoice", "welcome", "support", "notification", "general"] },
+        "subject": { "type": "string" },
+        "body": { "type": "string" },
+        "isSystem": { "type": "boolean" }
+      },
+      "required": ["id", "titleBn", "category", "subject", "body"]
+    },
+    "systemAggregate": {
+      "title": "SystemAggregate",
+      "description": "Aggregate fast lookup document for cross-device sync",
+      "type": "object",
+      "properties": {
+        "list": { "type": "array" }
+      },
+      "required": ["list"]
+    },
+    "supportTicket": {
+      "title": "SupportTicket",
+      "description": "Customer support and complaint ticketing record",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "ticketNumber": { "type": "string" },
+        "customerEmail": { "type": "string" },
+        "subject": { "type": "string" },
+        "status": { "type": "string", "enum": ["open", "in_progress", "resolved", "closed"] },
+        "priority": { "type": "string", "enum": ["low", "normal", "high", "urgent"] },
+        "category": { "type": "string" }
+      },
+      "required": ["id", "ticketNumber", "customerEmail", "subject", "status"]
+    },
+    "supportTemplate": {
+      "title": "SupportTemplate",
+      "description": "Canned response template for customer service",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "titleBn": { "type": "string" },
+        "bodyTemplate": { "type": "string" }
+      },
+      "required": ["id", "title", "bodyTemplate"]
+    },
+    "supportSettings": {
+      "title": "SupportSettings",
+      "description": "Business support contact details and signature configuration",
+      "type": "object",
+      "properties": {
+        "businessName": { "type": "string" },
+        "supportHotline": { "type": "string" },
+        "supportWhatsapp": { "type": "string" },
+        "supportHours": { "type": "string" }
+      }
+    }
+  },
+  "firestore": {
+    "/domains/{domainId}": {
+      "schema": "domain",
+      "description": "Custom verified domains"
+    },
+    "/mailboxes/{mailboxId}": {
+      "schema": "mailbox",
+      "description": "Active mailboxes"
+    },
+    "/messages/{messageId}": {
+      "schema": "message",
+      "description": "Webmail message items"
+    },
+    "/team_users/{userId}": {
+      "schema": "teamUser",
+      "description": "Team staff and sub-admin accounts"
+    },
+    "/security_logs/{logId}": {
+      "schema": "securityLog",
+      "description": "Audit security event logs"
+    },
+    "/email_templates/{templateId}": {
+      "schema": "emailTemplate",
+      "description": "Saved email and invoice templates"
+    },
+    "/system_data/{dataId}": {
+      "schema": "systemAggregate",
+      "description": "System cached aggregate collections"
+    },
+    "/tickets/{ticketId}": {
+      "schema": "supportTicket",
+      "description": "Customer support tickets"
+    },
+    "/support_templates/{templateId}": {
+      "schema": "supportTemplate",
+      "description": "Canned support responses"
+    },
+    "/support_settings/{settingId}": {
+      "schema": "supportSettings",
+      "description": "Support settings and branding"
+    }
+  }
+}
