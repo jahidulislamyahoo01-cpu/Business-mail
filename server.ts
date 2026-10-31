@@ -106,7 +106,10 @@ async function generateContentWithFallback(prompt: string): Promise<string> {
     try {
       const response = await ai.models.generateContent({
         model,
-        contents: prompt
+        contents: prompt,
+        config: {
+          maxOutputTokens: 600
+        }
       });
       if (response && response.text) {
         geminiRequestsToday += 1;
@@ -774,7 +777,7 @@ export async function queryOmniChannelKnowledgeBase(query: string, subject: stri
 
   try {
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 9000);
+    const timeoutId = setTimeout(() => controller.abort(), 2500);
 
     const res = await fetch(url, {
       method: 'POST',
@@ -1133,7 +1136,6 @@ app.post('/api/webhooks/inbound-email', async (req, res) => {
       !isInternalSender &&
       !isBounceOrNdr &&
       !isDuplicateMessage &&
-      !isTicketAlreadyReplied &&
       !isCurrentlyLocked;
 
     if (shouldAutoReply) {
