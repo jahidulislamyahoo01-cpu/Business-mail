@@ -108,7 +108,7 @@ async function generateContentWithFallback(prompt: string): Promise<string> {
         model,
         contents: prompt,
         config: {
-          maxOutputTokens: 600
+          maxOutputTokens: 2048
         }
       });
       if (response && response.text) {
@@ -777,7 +777,7 @@ export async function queryOmniChannelKnowledgeBase(query: string, subject: stri
 
   try {
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 2500);
+    const timeoutId = setTimeout(() => controller.abort(), 5000);
 
     const res = await fetch(url, {
       method: 'POST',
